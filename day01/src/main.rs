@@ -14,7 +14,7 @@ fn main() {
 
 
 fn get_parsed_input() -> Vec<Vec<i32>> {
-    let input = std::fs::read_to_string("src/test.txt").expect("Unreadable");
+    let input = std::fs::read_to_string("src/input.txt").expect("Unreadable");
     
     let raw_inventories: Vec<&str> = input
         .trim()
@@ -29,6 +29,6 @@ fn get_parsed_input() -> Vec<Vec<i32>> {
             .collect()
         );
     }
-    
+
     return parsed_inventories;
 }
