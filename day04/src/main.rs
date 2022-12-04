@@ -1,11 +1,9 @@
 use regex::Regex;
 
 fn main() {
-    let pairs = get_parsed_input();
-
     let mut contains: u16 = 0;
     let mut overlaps: u16 = 0;
-    for p in pairs {
+    for p in get_parsed_input() {
         let lo1 = p[0];
         let hi1 = p[1];
         let lo2 = p[2];
