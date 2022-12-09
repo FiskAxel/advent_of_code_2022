@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::cell::RefCell;
 
 fn main() {
-    let input = std::fs::read_to_string("src/test.txt").unwrap();
+    let input = std::fs::read_to_string("src/input.txt").unwrap();
     let mut input: Vec<&str> = input
         .trim()
         .lines()

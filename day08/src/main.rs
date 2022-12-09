@@ -5,7 +5,8 @@ fn main() {
     for line in input.lines() {
         let row: Vec<u32> = line
             .chars()
-            .map(|n| n.to_digit(RADIX).unwrap()).collect();
+            .map(|n| n.to_digit(RADIX).unwrap())
+            .collect();
         trees.push(row)
     }
 
