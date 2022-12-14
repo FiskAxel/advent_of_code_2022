@@ -4,15 +4,15 @@ fn main() {
     let mut map: Vec<Vec<char>> = get_map(input);
     let start: Pos = get_pos(&'S', &map);
     let goal: Pos = get_pos(&'E', &map);
-    let a_positions = get_every_a_position(&map);
+    let a_positions = get_a_positions(&map);
     map[start.y as usize][start.x as usize] = 'a';
     map[goal.y as usize][goal.x as usize] = 'z';
 
-    let mut result: i32 = a_star(start, &goal, &map);
+    let mut result: i32 = a_star_search(start, &goal, &map);
     println!("Part 1: {}", result);
 
     for pos in a_positions {
-        let steps: i32 = a_star(pos, &goal, &map);
+        let steps: i32 = a_star_search(pos, &goal, &map);
         if steps < result {
             result = steps;
         } 
@@ -52,12 +52,12 @@ fn get_pos(c: &char, map: &Vec<Vec<char>>) -> Pos {
     Pos { x: x, y: y, z: z, steps: 0, distance: 1 }
 }
 
-fn get_every_a_position(map: &Vec<Vec<char>>) -> Vec<Pos> {
-    let mut every_a: Vec<Pos> = vec![];
+fn get_a_positions(map: &Vec<Vec<char>>) -> Vec<Pos> {
+    let mut a_positions: Vec<Pos> = vec![];
     for y in 0..map.len() {
-        for x in 0..map[y].len() {
+        for x in 0..map[y].len() { 
             if map[y][x] == 'a' && b_as_neighbour(x, y, map){
-                every_a.push(Pos {
+                a_positions.push(Pos {
                     x: x as i32, 
                     y: y as i32, 
                     z: 'a',
@@ -67,10 +67,21 @@ fn get_every_a_position(map: &Vec<Vec<char>>) -> Vec<Pos> {
             }
         }
     }
-    return every_a;
+    return a_positions;
 }
 
-fn a_star(start: Pos, goal: &Pos, map: &Vec<Vec<char>>) -> i32 {
+fn b_as_neighbour(x: usize, y: usize, map: &Vec<Vec<char>>) -> bool { 
+    if x > 0 && map[y][x-1] == 'b' || 
+       y > 0 && map[y-1][x] == 'b' ||
+       y+1 < map.len() && map[y+1][x] == 'b' ||
+       x+1 < map[y].len() && map[y][x+1] == 'b' 
+    {
+        return true;
+    }
+    return false;
+}
+
+fn a_star_search(start: Pos, goal: &Pos, map: &Vec<Vec<char>>) -> i32 {
     let mut visited: HashMap<String, i32> = HashMap::new();
     visited.insert(to_key(&start), 0);
     let mut queue: Vec<Pos> = vec![start];   
@@ -158,17 +169,6 @@ fn valid_move(pos: &Pos, dx: i32, dy: i32, map: &Vec<Vec<char>>) -> bool {
 
 fn to_key(pos: &Pos) -> String {
     format!("{},{},{}", pos.x, pos.y, pos.z)
-}
-
-fn b_as_neighbour(x: usize, y: usize, map: &Vec<Vec<char>>) -> bool { 
-    if x > 0 && map[y][x-1] == 'b' || 
-       y > 0 && map[y-1][x] == 'b' ||
-       y+1 < map.len() && map[y+1][x] == 'b' ||
-       x+1 < map[y].len() && map[y][x+1] == 'b' 
-    {
-        return true;
-    }
-    return false;
 }
 
 struct Pos {
